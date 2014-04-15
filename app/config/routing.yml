@@ -1,0 +1,2 @@
+_eventual:
+    resource: "@Eventual/Resources/config/routing.yml"

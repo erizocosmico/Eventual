@@ -1,0 +1,3 @@
+_index:
+    pattern:  /
+    defaults: { _controller: Eventual:Home:index }
