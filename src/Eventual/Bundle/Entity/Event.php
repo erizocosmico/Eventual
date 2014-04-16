@@ -64,12 +64,12 @@ class Event
     private $date;
 
     /**
-     * @var integer
+     * @var EventCollection
      *
      * @ORM\ManyToOne(targetEntity="EventCollection", inversedBy="events")
      * @ORM\JoinColumn(name="collection_id", referencedColumnName="id")
      */
-    private $collectionId;
+    private $collection;
 
 
     /**
@@ -221,25 +221,25 @@ class Event
     }
 
     /**
-     * Set collectionId
+     * Set collection
      *
-     * @param integer $collectionId
+     * @param integer $collection
      * @return Event
      */
-    public function setCollectionId($collectionId)
+    public function setCollection($collection)
     {
-        $this->collectionId = $collectionId;
+        $this->collection = $collection;
 
         return $this;
     }
 
     /**
-     * Get collectionId
+     * Get collection
      *
-     * @return integer
+     * @return EventCollection
      */
-    public function getCollectionId()
+    public function getCollection()
     {
-        return $this->collectionId;
+        return $this->collection;
     }
 }

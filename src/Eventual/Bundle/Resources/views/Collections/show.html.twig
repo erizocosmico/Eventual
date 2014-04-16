@@ -3,6 +3,7 @@
 {% block title %}View collection: {{ collection.name }}{% endblock %}
 
 {% block content %}
+<a href="{{ path('events_create', {'id': collection.id})}}" title="Create event">Create event</a>
 {{ collection.name }} {{ form(form, {'method': 'DELETE', 'action': path('collections_delete', {'id': collection.id})}) }}
 {% for event in collection.getEvents() %}
 {% else %}

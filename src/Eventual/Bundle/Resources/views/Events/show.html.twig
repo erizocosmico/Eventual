@@ -1,0 +1,8 @@
+{% extends 'Eventual::layout.html.twig' %}
+
+{% block title %}View event: {{ event.name }}{% endblock %}
+
+{% block content %}
+{{ event.name }} {{ form(form, {'method': 'DELETE', 'action': path('events_delete', {'id': event.id})}) }}
+
+{% endblock %}

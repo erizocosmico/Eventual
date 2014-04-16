@@ -2,14 +2,13 @@
 
 namespace Eventual\Bundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Eventual\Bundle\Entity\EventCollection;
 
-class CollectionsController extends Controller
+class CollectionsController extends CollectionAware
 {
     /**
      * @Route("/{page}", name="collections_index", requirements={"page" = "\d+"}, defaults={"page" = 1})
@@ -18,7 +17,28 @@ class CollectionsController extends Controller
      */
     public function indexAction($page)
     {
+        $page = ($page > 0) ? $page : 1;
 
+        $collectionsRepository = $this->getDoctrine()
+            ->getRepository('Eventual:EventCollection');
+
+        $count = $collectionsRepository->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $collections = $collectionsRepository->findBy(
+            array('user' => $this->getUser()),
+            array('created' => 'DESC'),
+            25,
+            ($page-1)*25
+        );
+
+        return array(
+            'total_collections'        => $count,
+            'collections'              => $collections,
+            'count'                    => count($collections),
+        );
     }
 
     /**
@@ -50,24 +70,6 @@ class CollectionsController extends Controller
         return array(
             'form'    => $form->createView(),
         );
-    }
-
-    public function getCollection($id)
-    {
-        $collection = $this->getDoctrine()
-            ->getRepository('Eventual:EventCollection')
-            ->find($id);
-
-        if (!$collection) {
-            throw $this->createNotFoundException();
-        }
-
-        if ($this->getUser()->getId() != $collection->getUser()->getId()) {
-            // TODO not auth error
-            die('Not authorised');
-        }
-
-        return $collection;
     }
 
     /**
