@@ -1,3 +1,19 @@
-_index:
-    pattern:  /
-    defaults: { _controller: Eventual:Home:index }
+home:
+    resource: "@Eventual/Controller/HomeController.php"
+    prefix:   /
+    type:     annotation
+
+collections:
+    resource: "@Eventual/Controller/CollectionsController.php"
+    prefix:   /collections/
+    type:     annotation
+
+events:
+    resource: "@Eventual/Controller/EventsController.php"
+    prefix:   /events/
+    type:     annotation
+
+api:
+    resource: "@Eventual/Controller/ApiController.php"
+    prefix:   /api/
+    type:     annotation

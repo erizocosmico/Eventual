@@ -1,0 +1,11 @@
+{% extends 'Eventual::layout.html.twig' %}
+
+{% block title %}View collection: {{ collection.name }}{% endblock %}
+
+{% block content %}
+{{ collection.name }} {{ form(form, {'method': 'DELETE', 'action': path('collections_delete', {'id': collection.id})}) }}
+{% for event in collection.getEvents() %}
+{% else %}
+There are not any events in this collection.
+{% endfor %}
+{% endblock %}
