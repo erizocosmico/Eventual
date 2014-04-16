@@ -1,0 +1,18 @@
+{% extends 'Eventual::layout.html.twig' %}
+
+{% block title %}Collections{% endblock %}
+
+{% block content %}
+<a href="{{ path('collections_create') }}" title="Create collection">Create collection</a>
+
+<h1>Collections</h1>
+{% if collections %}
+<ul>
+{% for c in collections %}
+    <li><a href="{{ path('show_collection', {'id': c.id}) }}">{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+There are no collections.
+{% endif %}
+{% endblock %}
