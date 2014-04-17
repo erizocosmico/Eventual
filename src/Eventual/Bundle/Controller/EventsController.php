@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Eventual\Bundle\Entity\Event;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EventsController extends CollectionAware
 {
@@ -51,24 +52,6 @@ class EventsController extends CollectionAware
             'form'              => $form->createView(),
             'collection'        => $collection,
         );
-    }
-
-    public function getEvent($id)
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('Eventual:Event')
-            ->find($id);
-
-        if (!$event) {
-            throw $this->createNotFoundException();
-        }
-
-        if ($this->getUser()->getId() != $event->getCollection()->getUser()->getId()) {
-            // TODO not auth error
-            die('Not authorised');
-        }
-
-        return $event;
     }
 
     /**

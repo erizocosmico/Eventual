@@ -3,6 +3,7 @@
 namespace Eventual\Bundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CollectionAware extends Controller
 {
@@ -17,10 +18,26 @@ class CollectionAware extends Controller
         }
 
         if ($this->getUser()->getId() != $collection->getUser()->getId()) {
-            // TODO not auth error
-            die('Not authorised');
+            throw new AccessDeniedHttpException();
         }
 
         return $collection;
+    }
+
+    public function getEvent($id)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('Eventual:Event')
+            ->find($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->getUser()->getId() != $event->getCollection()->getUser()->getId()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        return $event;
     }
 }

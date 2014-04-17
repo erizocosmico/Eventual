@@ -52,7 +52,7 @@ class EventCollection
     private $created;
 
     /**
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="collectionId")
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="collection")
      */
     private $events;
 
