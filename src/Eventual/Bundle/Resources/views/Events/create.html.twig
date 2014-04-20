@@ -3,5 +3,49 @@
 {% block title %}Create event{% endblock %}
 
 {% block content %}
-{{ form(form) }}
+{{ form_start(form, {'attr': {'class': 'pure-form pure-form-aligned'}}) }}
+<fieldset>
+    <legend>Create event</legend>
+    <div class="pure-control-group">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.placeName) }}
+        {{ form_widget(form.placeName) }}
+        {{ form_errors(form.placeName) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.coordsLat) }}
+        {{ form_widget(form.coordsLat) }}
+        {{ form_errors(form.coordsLat) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.coordsLong) }}
+        {{ form_widget(form.coordsLong) }}
+        {{ form_errors(form.coordsLong) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+        {{ form_errors(form.date) }}
+    </div>
+
+    <div class="buttons">
+        {{ form_widget(form.createEvent, {'attr': {'class':'pure-button button-primary'}}) }}
+        <a class="pure-button" href="{{ path('show_collection', {'id': collection.id}) }}">Cancel</a>
+    </div>
+</fieldset>
+{{ form_end(form) }}
 {% endblock %}

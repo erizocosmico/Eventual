@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}Eventual{% endblock %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ asset('css/style_landing.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" type="text/css">
+    </head>
+    <body>
+        <div id="landing-wrap">
+            <header>
+                <h1><span class="fa fa-clock-o"></span> <a href="{{ path('index') }}">Eventual</a></h1>
+            </header>
+
+            <section>
+                <article class="description">
+                    Create events. Access them from your application. Don't worry about backend or storage.
+                </article>
+
+                <article class="actions">
+                    <a href="{{ path('fos_user_registration_register') }}" class="btn-signup" title="Sign up">Sign up</a>
+                    <a href="{{ path('fos_user_security_login') }}" class="btn-login" title="Log In">Log In</a>
+                </article>
+            </section>
+
+            <footer>Powered by <a href="https://github.com/mvader/Eventual">Eventual</a>.</footer>
+        </div>
+    </body>
+</html>

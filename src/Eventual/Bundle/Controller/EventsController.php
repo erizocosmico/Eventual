@@ -26,8 +26,8 @@ class EventsController extends CollectionAware
         $form = $this->createFormBuilder($event)
                     ->add('name', 'text')
                     ->add('placeName', 'text')
-                    ->add('coordsLat', 'number')
-                    ->add('coordsLong', 'number')
+                    ->add('coordsLat', 'number', array('precision' => 14, 'grouping' => true))
+                    ->add('coordsLong', 'number', array('precision' => 14, 'grouping' => true))
                     ->add('description', 'textarea')
                     ->add('date', 'datetime', array(
                         'data'     => $now,
@@ -80,10 +80,19 @@ class EventsController extends CollectionAware
     {
         $request = $this->get('request');
         $event = $this->getEvent($id);
+        $now = new \DateTime();
 
-        $form = $this->createFormBuilder($collection)
+        $form = $this->createFormBuilder($event)
                     ->add('name', 'text')
-                    ->add('update_event', 'submit')
+                    ->add('placeName', 'text')
+                    ->add('coordsLat', 'number', array('precision' => 14, 'grouping' => true))
+                    ->add('coordsLong', 'number', array('precision' => 14, 'grouping' => true))
+                    ->add('description', 'textarea')
+                    ->add('date', 'datetime', array(
+                        'data'     => $event->getDate(),
+                        'years'    => range((int)$now->format('Y'), (int)$now->format('Y')+10),
+                    ))
+                    ->add('updateEvent', 'submit')
                     ->getForm();
 
         $form->handleRequest($request);
@@ -111,11 +120,12 @@ class EventsController extends CollectionAware
     {
         $request = $this->get('request');
         $event = $this->getEvent($id);
+        $collection = $event->getCollection();
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($event);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('collections_index'));
+        return $this->redirect($this->generateUrl('show_collection', array('id' => $collection->getId())));
     }
 }

@@ -1,0 +1,113 @@
+@import '_base';
+
+body {
+    background: url(../images/body_bg.jpg) center center no-repeat;
+    background-size: cover;
+
+    #landing-wrap {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(44, 154, 183, 0.7);
+        clear: both;
+
+        header {
+            margin: 0px auto;
+            padding: 25px;
+            padding-top: 50px;
+
+            h1 {
+                text-align: center;
+                font-size: 4.0em;
+                padding: 0;
+                margin: 0;
+                font-weight: 300;
+                color: #FFF;
+                text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+
+                a {
+                    color: #FFF;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        section {
+            article {
+                &.description {
+                    text-align: center;
+                    padding: 30px;
+                    margin: 0 auto;
+                    max-width: 750px;
+                    color: #FFF;
+                    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+                    font-size: 1.8em;
+                    font-weight: 300;
+                }
+
+                &.actions {
+                    text-align: center;
+                    margin-top: 25px;
+                    margin-bottom: 25px;
+
+                    a.btn-signup {
+                        display: inline-block;
+                        text-decoration: none;
+                        padding: 10px 60px;
+                        font-size: 1.4em;
+                        background: rgba(255, 255, 255, 0.5);
+                        color: rgba(0, 0, 0, 0.7);
+                        font-weight: 400;
+                        border-radius: 3px;
+                        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+                        @include transition(0.3s, ease-in);
+
+                        &:hover {
+                            background: #FFF;
+                        }
+                    }
+
+                    a.btn-login {
+                        display: inline-block;
+                        text-decoration: none;
+                        padding: 9px 60px;
+                        margin-left: 20px;
+                        font-size: 1.4em;
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                        text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+                        color: #FFF;
+                        font-weight: 400;
+                        border-radius: 3px;
+                        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+                        @include transition(0.3s, ease-in);
+
+                        &:hover {
+                            border-color: #FFF;
+                        }
+                    }
+                }
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+            color: #FFF;
+            font-weight: 300;
+            font-size: 1.1em;
+
+            a {
+                color: #FFF;
+                text-decoration: none;
+                @include transition(0.3s, ease-in);
+                border-bottom: none;
+
+                &:hover {
+                    border-bottom: 1px solid #FFF;
+                }
+            }
+        }
+    }
+}

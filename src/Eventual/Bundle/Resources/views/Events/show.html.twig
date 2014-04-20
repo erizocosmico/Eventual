@@ -2,7 +2,71 @@
 
 {% block title %}View event: {{ event.name }}{% endblock %}
 
-{% block content %}
-{{ event.name }} {{ form(form, {'method': 'DELETE', 'action': path('events_delete', {'id': event.id})}) }}
+{% block js_head %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmaps_api_key }}&sensor=false"></script>
+<script type="text/javascript">
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng({{ event.coordsLat }}, {{ event.coordsLong }}),
+            zoom: 15
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+    }
 
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>{{ event.name }}</h1>
+
+<div class="action-buttons">
+    <a href="{{ path('show_collection', {'id': event.collection.id}) }}" class="pure-button pull-left" title="Go back">
+        <span class="fa fa-chevron-left"></span>
+        Go back to collection
+    </a>
+    <a href="{{ path('events_update', {'id': event.id}) }}" class="pure-button" title="Edit">
+        <span class="fa fa-cog"></span>
+        Edit event
+    </a>
+    <div class="button-form">
+        <form action="{{ path('events_delete', {'id': event.id}) }}" metdod="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="pure-button button-error" name="submit-delete-{{ event.id }}">
+                <span class="fa fa-trash-o"></span>
+                Delete event
+            </button>
+        </form>
+    </div>
+</div>
+
+<table class="pure-table pure-table-horizontal table-data">
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td>{{ event.name }}</td>
+        </tr>
+        <tr>
+            <td>Place name</td>
+            <td>{{ event.placeName }}</td>
+        </tr>
+        <tr>
+            <td>Coordinates</td>
+            <td>{{ event.coordsLat }}, {{ event.coordsLong }}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>{{ event.description }}</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>{{ event.date|date('d/m/Y H:m') }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Map</h2>
+
+<div id="map-canvas"></div>
 {% endblock %}

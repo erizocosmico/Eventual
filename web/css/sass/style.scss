@@ -1,0 +1,228 @@
+@import '_base';
+
+#form_date, #form_date_date, #form_date_time {
+    width: auto;
+    display: inline-block;
+}
+
+#form_date_time {
+    margin-left: 15px;
+}
+
+.button-error {
+    color: white;
+    background: rgb(202, 60, 60);
+}
+
+body {
+    font-weight: 400;
+    color: #333;
+    font-size: 14px;
+}
+
+header {
+    h1 {
+        font-size: 4.0em;
+        border: none;
+        text-align: center;
+        font-weight: 300;
+    }
+}
+
+#container-not-logged {
+    height: 100%;
+
+    section {
+        padding: 25px;
+    }
+}
+
+#container {
+    height: 100%;
+
+    aside {
+        width: 30%;
+        float: left;
+        background: #EEE;
+        height: 100%;
+        position: fixed;
+
+        h1 {
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5em;
+
+            a {
+                color: #444;
+
+                &:hover {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        nav ul {
+            padding: 0;
+            margin: 0;
+
+            li a {
+                display: block;
+                padding: 10px 25px;
+                font-size: 1.3em;
+                color: #666;
+
+                &:hover {
+                    background: #DDD;
+                    color: #444;
+                    border: none;
+                }
+            }
+        }
+    }
+
+    section {
+        width: 70%;
+        float: right;
+        padding: 25px;
+    }
+}
+
+h1 {
+    @include title;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #EEE;
+}
+
+h2 {
+    font-size: 1.7em;
+    font-weight: 300;
+    color: #555;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.action-buttons {
+    padding: 10px 0;
+    text-align: right;
+
+    .pull-left {
+        float: left;
+    }
+}
+
+.msg-info {
+    background: rgb(249,246,202);
+    padding: 15px;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+}
+
+a:not(.pure-button) {
+    color: #2588a8;
+    text-decoration: none;
+
+    &:hover {
+        border-bottom: 1px solid #2588a8;
+    }
+}
+
+.button-form, .button-form * {
+    width: auto;
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+    border: none !important;
+
+    th {
+        color: #444;
+        font-weight: 400;
+    }
+
+    tr {
+        border-bottom-color: #EEE !important;
+
+        td.link {
+            a {
+                font-weight: bold;
+                color: #666;
+
+                &:hover {
+                    border-bottom-color: #666;
+                }
+            }
+        }
+    }
+
+    &.table-data {
+        margin-bottom: 15px;
+
+        tr {
+            td:first-child {
+                width: 30%;
+                background: #EEE;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+#map-canvas {
+    width: 100%;
+    height: 450px;
+}
+
+form {
+    fieldset {
+        legend {
+            @include title;
+        }
+    }
+
+    textarea, input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+        width: 50%;
+    }
+
+    input:hover, input:focus, textarea:hover, textarea:focus {
+        border-color: #2588a8 !important;
+        @include transition(0.3s, ease-in);
+    }
+
+    .pure-control-group {
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"], textarea {
+            border: 3px solid #DDD;
+            box-shadow: none;
+        }
+
+        ul {
+            list-style: none;
+            padding: 10px;
+            margin: 6px;
+            color: rgb(202,60,60);
+            text-align: center;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
+    }
+
+    .buttons {
+        text-align: center;
+        padding-top: 15px;
+    }
+}
+
+.centered-form {
+    width: 95%;
+    margin: 15px auto;
+    border-radius: 6px;
+    border: 1px solid #EEE;
+    padding: 25px;
+    max-width: 650px;
+}
+
+.button-primary {
+    background-color: #2588a8;
+    color: #FFF;
+}

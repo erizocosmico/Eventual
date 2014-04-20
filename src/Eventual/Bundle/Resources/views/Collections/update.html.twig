@@ -3,5 +3,20 @@
 {% block title %}Update collection: {{ collection.name }}{% endblock %}
 
 {% block content %}
-{{ form(form) }}
+{{ form_start(form, {'attr': {'class': 'pure-form pure-form-aligned'}}) }}
+<fieldset>
+    <legend>Update collection</legend>
+
+    <div class="pure-control-group">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="buttons">
+        {{ form_widget(form.updateCollection, {'attr': {'class':'pure-button button-primary'}}) }}
+        <a class="pure-button" href="{{ path('collections_index') }}">Cancel</a>
+    </div>
+</fieldset>
+{{ form_end(form) }}
 {% endblock %}

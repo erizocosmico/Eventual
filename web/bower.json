@@ -1,0 +1,30 @@
+{
+  "name": "Eventual",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mvader/Eventual",
+  "authors": [
+    "José Miguel Molina Arboledas <hi@mvader.me>"
+  ],
+  "description": "Eventual is an application to create events and information about them and provide a service to consume that data.",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "events",
+    "api",
+    "service",
+    "geolocation"
+  ],
+  "dependencies": {
+    "font-awesome": "latest"
+  },
+  "license": "GNU v3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

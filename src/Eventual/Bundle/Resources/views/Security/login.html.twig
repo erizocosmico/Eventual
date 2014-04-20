@@ -1,0 +1,34 @@
+{% extends "Eventual::layout_not_logged.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block content %}
+<form action="{{ path("fos_user_security_check") }}" class="pure-form pure-form-aligned centered-form" method="post">
+    <fieldset>
+        <legend>{{ 'security.login.submit'|trans }}</legend>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+        <div class="pure-control-group">
+            <label for="username">{{ 'security.login.username'|trans }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+            {% if error %}
+                <ul>{{ error|trans }}</ul>
+            {% endif %}
+        </div>
+
+        <div class="pure-control-group">
+            <label for="password">{{ 'security.login.password'|trans }}</label>
+            <input type="password" id="password" name="_password" required="required" />
+        </div>
+
+        <div class="pure-control-group">
+            <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+        </div>
+
+        <div class="buttons">
+            <button type="submit" id="_submit" name="_submit" class="pure-button button-primary">{{ 'security.login.submit'|trans }}</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock content %}

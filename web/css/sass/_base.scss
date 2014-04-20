@@ -1,0 +1,25 @@
+@mixin title {
+    font-size: 2.0em;
+    font-weight: 300;
+    color: #444;
+}
+
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+@mixin transition($time, $mode) {
+    -webkit-transition: all $time $mode;
+    -moz-transition: all $time $mode;
+    -o-transition: all $time $mode;
+    transition: all $time $mode;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+}

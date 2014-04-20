@@ -10,6 +10,8 @@ use Eventual\Bundle\Entity\EventCollection;
 
 class CollectionsController extends CollectionAware
 {
+    const COLLECTIONS_PER_PAGE = 25;
+
     /**
      * @Route("/{page}", name="collections_index", requirements={"page" = "\d+"}, defaults={"page" = 1})
      * @Method({"GET"})
@@ -27,17 +29,20 @@ class CollectionsController extends CollectionAware
             ->getQuery()
             ->getSingleScalarResult();
 
+        $page = ($page-1*self::COLLECTIONS_PER_PAGE > $count) ? 1 : $page;
+
         $collections = $collectionsRepository->findBy(
             array('user' => $this->getUser()),
             array('created' => 'DESC'),
-            25,
-            ($page-1)*25
+            self::COLLECTIONS_PER_PAGE,
+            ($page-1)*self::COLLECTIONS_PER_PAGE
         );
 
         return array(
-            'total_collections'        => $count,
+            'total_pages'              => ceil($count/self::COLLECTIONS_PER_PAGE),
             'collections'              => $collections,
             'count'                    => count($collections),
+            'page'                     => $page,
         );
     }
 
@@ -52,7 +57,7 @@ class CollectionsController extends CollectionAware
 
         $form = $this->createFormBuilder($collection)
                     ->add('name', 'text')
-                    ->add('create', 'submit')
+                    ->add('createCollection', 'submit')
                     ->getForm();
 
         $form->handleRequest($request);
@@ -73,19 +78,35 @@ class CollectionsController extends CollectionAware
     }
 
     /**
-     * @Route("/show/{id}", name="show_collection", requirements={"id"="\d+"})
+     * @Route("/show/{id}/{page}", name="show_collection", requirements={"id"="\d+", "page"="\d+"}, defaults={"page"=1})
      * @Method({"GET"})
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($id, $page)
     {
-        $form = $this->createFormBuilder(array())
-                    ->add("remove_collection", "submit")
-                    ->getForm();
+        $eventsRepository = $this->getDoctrine()
+            ->getRepository('Eventual:Event');
+
+        $count = $eventsRepository->createQueryBuilder('e')
+            ->select('COUNT(e.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $page = ($page-1*self::COLLECTIONS_PER_PAGE > $count) ? 1 : $page;
+
+        $events = $eventsRepository->findBy(
+            array('collection' => $id),
+            array('date' => 'DESC'),
+            self::COLLECTIONS_PER_PAGE,
+            ($page-1)*self::COLLECTIONS_PER_PAGE
+        );
 
         return array(
-            'collection' => $this->getCollection($id),
-            'form'       => $form->createView(),
+            'collection'               => $this->getCollection($id),
+            'total_pages'              => ceil($count/self::COLLECTIONS_PER_PAGE),
+            'events'                   => $events,
+            'count'                    => count($events),
+            'page'                     => $page,
         );
     }
 
@@ -101,7 +122,7 @@ class CollectionsController extends CollectionAware
 
         $form = $this->createFormBuilder($collection)
                     ->add('name', 'text')
-                    ->add('update_collection', 'submit')
+                    ->add('updateCollection', 'submit')
                     ->getForm();
 
         $form->handleRequest($request);

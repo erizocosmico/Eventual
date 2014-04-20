@@ -38,14 +38,14 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="coords_lat", type="decimal")
+     * @ORM\Column(name="coords_lat", type="decimal", precision=14, scale=8, nullable=true)
      */
     private $coordsLat;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="coords_long", type="decimal")
+     * @ORM\Column(name="coords_long", type="decimal", precision=14, scale=8, nullable=true)
      */
     private $coordsLong;
 

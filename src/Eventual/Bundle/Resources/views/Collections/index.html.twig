@@ -3,15 +3,58 @@
 {% block title %}Collections{% endblock %}
 
 {% block content %}
-<a href="{{ path('collections_create') }}" title="Create collection">Create collection</a>
-
 <h1>Collections</h1>
+
+<div class="action-buttons">
+    <a href="{{ path('collections_create') }}" class="pure-button button-primary" title="Create collection">
+        <span class="fa fa-plus"></span>
+        Create collection
+    </a>
+</div>
+
 {% if collections %}
-<ul>
+<table class="pure-table pure-table-horizontal">
+    <tbody>
 {% for c in collections %}
-    <li><a href="{{ path('show_collection', {'id': c.id}) }}">{{ c.name }}</a></li>
+        <tr>
+            <td>{{ c.id }}</td>
+            <td class="link"><a href="{{ path('show_collection', {'id': c.id}) }}">{{ c.name }}</a></td>
+            <td>{{ c.created|date('d/m/Y', false) }}</td>
+            <td>
+                <a href="{{ path('collections_update', {'id': c.id}) }}" class="pure-button" title="Edit">
+                    <span class="fa fa-cog"></span>
+                    Edit
+                </a>
+
+                <div class="button-form">
+                    <form action="{{ path('collections_delete', {'id': c.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="pure-button button-error" name="submit-delete-{{ c.id }}">
+                            <span class="fa fa-trash-o"></span>
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
 {% endfor %}
-</ul>
+    </tbody>
+</table>
+
+<div class="action-buttons">
+    {% if page > 1 %}
+    <a href="{{ path('collections_index', {'page': page - 1}) }}" class="pure-button pull-left" title="Previous page">
+        <span class="fa fa-chevron-left"></span>
+        Previous page
+    </a>
+    {% endif %}
+    {% if total_pages > page %}
+    <a href="{{ path('collections_index', {'page': page + 1}) }}" class="pure-button" title="Next page">
+        <span class="fa fa-chevron-right"></span>
+        Next page
+    </a>
+    {% endif %}
+</div>
 {% else %}
 There are no collections.
 {% endif %}

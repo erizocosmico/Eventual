@@ -9,10 +9,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class HomeController extends Controller
 {
     /**
-     * @Template()
+     * @Route("/", name="index")
      */
     public function indexAction()
     {
-        return array();
+        // If the user is logged in redirect to collections index
+        if (!is_null($this->getUser())) {
+            return $this->redirect($this->generateUrl('collections_index'));
+        }
+
+        return $this->render('Eventual::landing.html.twig');
     }
 }
