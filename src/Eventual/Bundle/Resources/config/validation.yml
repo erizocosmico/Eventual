@@ -15,14 +15,6 @@ Eventual\Bundle\Entity\Event:
             - NotBlank: ~
             - Length:
                 min: 3
-        coordsLat:
-            - Range:
-                min: -90
-                max: 90
-        coordsLong:
-            - Range:
-                min: -180
-                max: 180
         description:
             - NotBlank: ~
             - Length:

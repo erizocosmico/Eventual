@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Eventual\Bundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Form\FormError;
 
 class EventsController extends CollectionAware
 {
@@ -26,8 +27,9 @@ class EventsController extends CollectionAware
         $form = $this->createFormBuilder($event)
                     ->add('name', 'text')
                     ->add('placeName', 'text')
-                    ->add('coordsLat', 'number', array('precision' => 14, 'grouping' => true))
-                    ->add('coordsLong', 'number', array('precision' => 14, 'grouping' => true))
+                    ->add('coordinates', 'text', array(
+                        'mapped'         => false,
+                    ))
                     ->add('description', 'textarea')
                     ->add('date', 'datetime', array(
                         'data'     => $now,
@@ -38,7 +40,16 @@ class EventsController extends CollectionAware
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $this->validateCoordinates($form);
+        }
+
         if ($form->isValid()) {
+            list($lat, $long) = array_map(function ($coord) {
+                return (float)trim($coord);
+            }, split(',', $form['coordinates']->getData()));
+            $event->setCoordsLat($lat);
+            $event->setCoordsLong($long);
             $event->setCollection($collection);
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
@@ -85,11 +96,12 @@ class EventsController extends CollectionAware
         $form = $this->createFormBuilder($event)
                     ->add('name', 'text')
                     ->add('placeName', 'text')
-                    ->add('coordsLat', 'number', array('precision' => 14, 'grouping' => true))
-                    ->add('coordsLong', 'number', array('precision' => 14, 'grouping' => true))
+                    ->add('coordinates', 'text', array(
+                        'mapped'         => false,
+                    ))
                     ->add('description', 'textarea')
                     ->add('date', 'datetime', array(
-                        'data'     => $event->getDate(),
+                        'data'     => $now,
                         'years'    => range((int)$now->format('Y'), (int)$now->format('Y')+10),
                     ))
                     ->add('updateEvent', 'submit')
@@ -97,7 +109,18 @@ class EventsController extends CollectionAware
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $this->validateCoordinates($form);
+        } else {
+            $form->get('coordinates')->setData($event->getCoordsLat() . ', ' . $event->getCoordsLong());
+        }
+
         if ($form->isValid()) {
+            list($lat, $long) = array_map(function ($coord) {
+                return (float)trim($coord);
+            }, split(',', $form['coordinates']->getData()));
+            $event->setCoordsLat($lat);
+            $event->setCoordsLong($long);
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush();
@@ -127,5 +150,30 @@ class EventsController extends CollectionAware
         $em->flush();
 
         return $this->redirect($this->generateUrl('show_collection', array('id' => $collection->getId())));
+    }
+
+    private function validateCoordinates($form)
+    {
+        $valid = true;
+        if ($form->get('coordinates')->getData()) {
+            $data = $form->get('coordinates')->getData();
+            $dataParts = split(',', $data);
+
+            if (count($dataParts) == 2) {
+                foreach ($dataParts as $i => $coord) {
+                    $coord = (float) trim($coord);
+                    $i++;
+                    $valid &= $coord >= (-$i*90) && $coord <= ($i*90);
+                }
+            } else {
+                $valid = false;
+            }
+        } else {
+            $valid = false;
+        }
+
+        if (!$valid) {
+            $form->get('coordinates')->addError(new FormError('Coordinates are not valid.'));
+        }
     }
 }
