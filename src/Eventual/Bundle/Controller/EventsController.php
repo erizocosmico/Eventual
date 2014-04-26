@@ -101,7 +101,7 @@ class EventsController extends CollectionAware
                     ))
                     ->add('description', 'textarea')
                     ->add('date', 'datetime', array(
-                        'data'     => $now,
+                        'data'     => $event->getDate(),
                         'years'    => range((int)$now->format('Y'), (int)$now->format('Y')+10),
                     ))
                     ->add('updateEvent', 'submit')
