@@ -41,50 +41,19 @@
     </tbody>
 </table>
 
-<h2>Events</h2>
+<h2>Days</h2>
 {% if events|length > 0 %}
 <table class="pure-table pure-table-horizontal">
     <tbody>
 {% for e in events %}
         <tr>
-            <td>{{ e.id }}</td>
-            <td class="link"><a href="{{ path('show_event', {'id': e.id}) }}" title="{{ e.name }}">{{ e.name }}</a></td>
-            <td>{{ e.placeName }}</td>
-            <td>{{ e.date|date('d/m/Y, H:m', false) }}</td>
-            <td>
-                <a href="{{ path('events_update', {'id': e.id}) }}" class="pure-button" title="Edit">
-                    <span class="fa fa-cog"></span>
-                    Edit
-                </a>
-
-                <div class="button-form">
-                    <form action="{{ path('events_delete', {'id': e.id}) }}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE" />
-                        <button type="submit" class="pure-button button-error" name="submit-delete-{{ e.id }}">
-                            <span class="fa fa-trash-o"></span>
-                            Delete
-                        </button>
-                    </form>
-                </div>
-            </td>
+            <td>{{ e.event_date }}</td>
+            <td>{{ e.num_events }} event{% if e.num_events != 1 %}s{% endif %}</td>
+            <td><a href="{{ path('show_day', {'id': collection.id, 'day': e.event_date}) }}" title="View events" class="pure-button">View events</a></td>
         </tr>
 {% endfor %}
     </tbody>
 </table>
-<div class="action-buttons">
-    {% if page > 1 %}
-    <a href="{{ path('show_collection', {'id': collection.id, 'page': page - 1}) }}" class="pure-button pull-left" title="Previous page">
-        <span class="fa fa-chevron-left"></span>
-        Previous page
-    </a>
-    {% endif %}
-    {% if total_pages > page %}
-    <a href="{{ path('show_collection', {'id': collection.id, 'page': page + 1}) }}" class="pure-button" title="Next page">
-        <span class="fa fa-chevron-right"></span>
-        Next page
-    </a>
-    {% endif %}
-</div>
 {% else %}
 <div class="msg-info">
     There are no events in this collection.

@@ -1,0 +1,93 @@
+{% extends 'Eventual::layout.html.twig' %}
+
+{% block title %}View collection: {{ collection.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ collection.name }}</h1>
+<div class="action-buttons">
+    <a href="{{ path('show_collection', {'id': collection.id}) }}" class="pure-button pull-left" title="Go back">
+        <span class="fa fa-chevron-left"></span>
+        View collection
+    </a>
+    <a href="{{ path('events_create', {'id': collection.id})}}" class="pure-button button-primary" title="Create event">
+        <span class="fa fa-plus"></span>
+        Create event
+    </a>
+    <div class="button-form">
+        <form action="{{ path('collections_delete', {'id': collection.id}) }}" method="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="pure-button button-error" id="form_removeCollection" name="form[removeCollection]">
+                <span class="fa fa-trash-o"></span>
+                Delete collection
+            </button>
+        </form>
+    </div>
+</div>
+
+<table class="pure-table pure-table-horizontal table-data">
+    <tbody>
+        <tr>
+            <td>Public key</td>
+            <td>{{ collection.pubKey }}</td>
+        </tr>
+        <tr>
+            <td>Private key</td>
+            <td>{{ collection.privateKey }}</td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>{{ collection.created|date('d/m/Y H:m') }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Events &mdash; {{ day }}</h2>
+{% if events|length > 0 %}
+<table class="pure-table pure-table-horizontal">
+    <tbody>
+{% for e in events %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td class="link"><a href="{{ path('show_event', {'id': e.id}) }}" title="{{ e.name }}">{{ e.name }}</a></td>
+            <td>{{ e.placeName }}</td>
+            <td>{{ e.date|date('d/m/Y, H:m', false) }}</td>
+            <td>
+                <a href="{{ path('events_update', {'id': e.id}) }}" class="pure-button" title="Edit">
+                    <span class="fa fa-cog"></span>
+                    Edit
+                </a>
+
+                <div class="button-form">
+                    <form action="{{ path('events_delete', {'id': e.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="pure-button button-error" name="submit-delete-{{ e.id }}">
+                            <span class="fa fa-trash-o"></span>
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+<div class="action-buttons">
+    {% if page > 1 %}
+    <a href="{{ path('show_collection', {'id': collection.id, 'page': page - 1}) }}" class="pure-button pull-left" title="Previous page">
+        <span class="fa fa-chevron-left"></span>
+        Previous page
+    </a>
+    {% endif %}
+    {% if total_pages > page %}
+    <a href="{{ path('show_collection', {'id': collection.id, 'page': page + 1}) }}" class="pure-button" title="Next page">
+        <span class="fa fa-chevron-right"></span>
+        Next page
+    </a>
+    {% endif %}
+</div>
+{% else %}
+<div class="msg-info">
+    There are no events in this collection.
+</div>
+{% endif %}
+{% endblock %}

@@ -176,4 +176,43 @@ class EventsController extends CollectionAware
             $form->get('coordinates')->addError(new FormError('Coordinates are not valid.'));
         }
     }
+
+    /**
+     * @Route("/{id}/for_day/{day}/{page}", name="show_day", requirements={"id"="\d+", "day"="\d{4}-\d{2}-\d{2}", "page"="\d+"}, defaults={"page"=1})
+     * @Method({"GET"})
+     * @Template()
+     */
+    public function eventsForDayAction($id, $day, $page)
+    {
+        $eventsRepository = $this->getDoctrine()
+            ->getRepository('Eventual:Event');
+
+        $count = $eventsRepository->createQueryBuilder('e')
+            ->select('COUNT(e.id)')
+            ->where('abs(date_diff(e.date, :evdate)) = 0')
+            ->setParameter('evdate', $day)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $page = ($page-1*25 > $count) ? 1 : $page;
+
+        $events = $eventsRepository->createQueryBuilder('e')
+            ->where('abs(date_diff(e.date, :evdate)) = 0 AND e.collection = :col')
+            ->setParameter('evdate', $day)
+            ->setParameter('col', $id)
+            ->orderBy('e.date', 'ASC')
+            ->setMaxResults(25)
+            ->setFirstResult(($page-1)*25)
+            ->getQuery()
+            ->getResult();
+
+        return array(
+            'collection'               => $this->getCollection($id),
+            'total_pages'              => ceil($count/25),
+            'events'                   => $events,
+            'count'                    => count($events),
+            'page'                     => $page,
+            'day'                      => $day,
+        );
+    }
 }

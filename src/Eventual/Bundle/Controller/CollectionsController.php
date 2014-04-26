@@ -10,8 +10,6 @@ use Eventual\Bundle\Entity\EventCollection;
 
 class CollectionsController extends CollectionAware
 {
-    const COLLECTIONS_PER_PAGE = 25;
-
     /**
      * @Route("/{page}", name="collections_index", requirements={"page" = "\d+"}, defaults={"page" = 1})
      * @Method({"GET"})
@@ -78,35 +76,30 @@ class CollectionsController extends CollectionAware
     }
 
     /**
-     * @Route("/show/{id}/{page}", name="show_collection", requirements={"id"="\d+", "page"="\d+"}, defaults={"page"=1})
+     * @Route("/show/{id}", name="show_collection", requirements={"id"="\d+"}, defaults={"page"=1})
      * @Method({"GET"})
      * @Template()
      */
     public function showAction($id, $page)
     {
-        $eventsRepository = $this->getDoctrine()
-            ->getRepository('Eventual:Event');
+        $em = $this->getDoctrine()
+            ->getManager();
 
-        $count = $eventsRepository->createQueryBuilder('e')
-            ->select('COUNT(e.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $em->getConfiguration()
+            ->addCustomDatetimeFunction('DATE', '\\Eventual\\Bundle\\DQL\\AST\\DateFunction');
 
-        $page = ($page-1*self::COLLECTIONS_PER_PAGE > $count) ? 1 : $page;
-
-        $events = $eventsRepository->findBy(
-            array('collection' => $id),
-            array('date' => 'DESC'),
-            self::COLLECTIONS_PER_PAGE,
-            ($page-1)*self::COLLECTIONS_PER_PAGE
-        );
+        $events = $em->createQuery(
+            'SELECT COUNT(e.id) as num_events, DATE(e.date) AS event_date
+            FROM Eventual:Event e
+            WHERE e.collection = :col
+            GROUP BY event_date
+            ORDER BY event_date ASC'
+        )->setParameter('col', $id)
+        ->getResult();
 
         return array(
             'collection'               => $this->getCollection($id),
-            'total_pages'              => ceil($count/self::COLLECTIONS_PER_PAGE),
             'events'                   => $events,
-            'count'                    => count($events),
-            'page'                     => $page,
         );
     }
 
