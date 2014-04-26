@@ -27,17 +27,17 @@ class CollectionsController extends CollectionAware
             ->getQuery()
             ->getSingleScalarResult();
 
-        $page = ($page-1*self::COLLECTIONS_PER_PAGE > $count) ? 1 : $page;
+        $page = ($page-1*25 > $count) ? 1 : $page;
 
         $collections = $collectionsRepository->findBy(
             array('user' => $this->getUser()),
             array('created' => 'DESC'),
-            self::COLLECTIONS_PER_PAGE,
-            ($page-1)*self::COLLECTIONS_PER_PAGE
+            25,
+            ($page-1)*25
         );
 
         return array(
-            'total_pages'              => ceil($count/self::COLLECTIONS_PER_PAGE),
+            'total_pages'              => ceil($count/25),
             'collections'              => $collections,
             'count'                    => count($collections),
             'page'                     => $page,
