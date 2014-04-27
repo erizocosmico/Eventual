@@ -205,6 +205,12 @@ form {
             font-size: 0.9em;
             border-radius: 5px;
         }
+        
+        .pure-button {
+            padding: 9px 25px !important;
+            padding-top: 8px !important;
+            vertical-align: bottom;
+        }
     }
 
     .buttons {

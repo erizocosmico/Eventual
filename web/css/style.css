@@ -145,6 +145,10 @@ form input:hover, form input:focus, form textarea:hover, form textarea:focus {
 form .pure-control-group input[type="text"], form .pure-control-group input[type="password"], form .pure-control-group input[type="email"], form .pure-control-group input[type="number"], form .pure-control-group textarea {
   border: 3px solid #DDD;
   box-shadow: none; }
+form .pure-control-group .pure-button {
+  padding: 9px 25px !important;
+  padding-top: 8px !important;
+  vertical-align: bottom; }
 form .pure-control-group ul {
   list-style: none;
   padding: 10px;

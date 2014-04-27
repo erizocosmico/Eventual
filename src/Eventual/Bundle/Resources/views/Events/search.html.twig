@@ -1,0 +1,50 @@
+{% extends 'Eventual::layout.html.twig' %}
+
+{% block title %}Search events{% endblock %}
+
+{% block content %}
+{{ form_start(form, {'attr': {'class': 'pure-form pure-form-aligned'}}) }}
+<fieldset>
+    <legend>Search events</legend>
+    <div class="pure-control-group">
+        {{ form_widget(form.query) }} {{ form_widget(form.searchEvents, {'attr': {'class':'pure-button button-primary'}}) }}
+    </div>
+</fieldset>
+{{ form_end(form) }}
+
+<h2>Events</h2>
+{% if events|length > 0 %}
+<table class="pure-table pure-table-horizontal">
+    <tbody>
+{% for e in events %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td class="link"><a href="{{ path('show_event', {'id': e.id}) }}" title="{{ e.name }}">{{ e.name }}</a></td>
+            <td>{{ e.placeName }}</td>
+            <td>{{ e.date|date('d/m/Y, H:m', false) }}</td>
+            <td>
+                <a href="{{ path('events_update', {'id': e.id}) }}" class="pure-button" title="Edit">
+                    <span class="fa fa-cog"></span>
+                    Edit
+                </a>
+
+                <div class="button-form">
+                    <form action="{{ path('events_delete', {'id': e.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="pure-button button-error" name="submit-delete-{{ e.id }}">
+                            <span class="fa fa-trash-o"></span>
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="msg-info">
+    There are no events matching your search.
+</div>
+{% endif %}
+{% endblock %}

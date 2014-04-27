@@ -151,6 +151,38 @@ class EventsController extends CollectionAware
 
         return $this->redirect($this->generateUrl('show_collection', array('id' => $collection->getId())));
     }
+    
+    /**
+     * @Route("/search", name="events_search")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function searchAction(Request $request)
+    {
+        $form = $this->createFormBuilder(array())
+                    ->add('query', 'text')
+                    ->add("searchEvents", "submit")
+                    ->getForm();
+        
+        $form->handleRequest($request);
+        $events = array();
+        
+        if ($form->isSubmitted() && $form->get('query')->getData()) {
+            $events = $this->getDoctrine()
+                ->getRepository('Eventual:Event')
+                ->createQueryBuilder('e')
+                ->where('e.name LIKE :query')
+                ->setParameter('query', '%' . $form->get('query')->getData() . '%')
+                ->orderBy('e.name', 'ASC')
+                ->getQuery()
+                ->getResult();
+        }
+        
+        return array(
+            'form'          => $form->createView(),
+            'events'        => $events,
+        );
+    }
 
     private function validateCoordinates($form)
     {
