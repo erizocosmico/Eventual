@@ -50,7 +50,7 @@
             <td>{{ e.id }}</td>
             <td class="link"><a href="{{ path('show_event', {'id': e.id}) }}" title="{{ e.name }}">{{ e.name }}</a></td>
             <td>{{ e.placeName }}</td>
-            <td>{{ e.date|date('d/m/Y, H:m', false) }}</td>
+            <td>{{ e.date|date('d/m/Y, H:i', false) }}</td>
             <td>
                 <a href="{{ path('events_update', {'id': e.id}) }}" class="pure-button" title="Edit">
                     <span class="fa fa-cog"></span>

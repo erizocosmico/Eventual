@@ -23,6 +23,9 @@ class EventsController extends CollectionAware
         $event = new Event();
         $collection = $this->getCollection($id);
         $now = new \DateTime();
+        if (isset($_SESSION['last_date'])) {
+            $now->setTimestamp((int)$_SESSION['last_date']);
+        }
 
         $form = $this->createFormBuilder($event)
                     ->add('name', 'text')
@@ -52,6 +55,7 @@ class EventsController extends CollectionAware
             $event->setCoordsLong($long);
             $event->setCollection($collection);
             $em = $this->getDoctrine()->getManager();
+            $_SESSION['last_date'] = $form['date']->getData()->getTimestamp();
             $em->persist($event);
             $em->flush();
             return $this->redirect($this->generateUrl('show_event', array(

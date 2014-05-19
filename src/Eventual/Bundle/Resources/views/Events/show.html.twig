@@ -26,12 +26,16 @@
         <span class="fa fa-chevron-left"></span>
         Go back to collection
     </a>
+    <a href="{{ path('events_create', {'id': event.collection.id})}}" class="pure-button button-primary" title="Create event">
+        <span class="fa fa-plus"></span>
+        Create event
+    </a>
     <a href="{{ path('events_update', {'id': event.id}) }}" class="pure-button" title="Edit">
         <span class="fa fa-cog"></span>
         Edit event
     </a>
     <div class="button-form">
-        <form action="{{ path('events_delete', {'id': event.id}) }}" metdod="POST">
+        <form action="{{ path('events_delete', {'id': event.id}) }}" metdod="DELETE">
             <input type="hidden" name="_method" value="DELETE" />
             <button type="submit" class="pure-button button-error" name="submit-delete-{{ event.id }}">
                 <span class="fa fa-trash-o"></span>
@@ -61,7 +65,7 @@
         </tr>
         <tr>
             <td>Date</td>
-            <td>{{ event.date|date('d/m/Y H:m') }}</td>
+            <td>{{ event.date|date('d/m/Y H:i') }}</td>
         </tr>
     </tbody>
 </table>
